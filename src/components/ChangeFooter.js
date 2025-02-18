@@ -23,21 +23,9 @@ export const ChangeFooter = () => {
     <>
       <div className="card-footer text-muted">
         <div className="input-group input-group-sm">
-          <input
-            type="text"
-            className="form-control"
-            placeholder="change your..."
-            onChange={(e) => setInputChange(e.target.value)}
-          />
-          <button
-            className="btn btn-outline-secondary btn-sm"
-            type="button"
-            onClick={() =>
-              inputChange !== "" && dispatcher(login({ userName: inputChange }))
-            }
-          >
-            Username
-          </button>
+         
+        
+          
           <button
             className="btn btn-outline-secondary dropdown-toggle"
             type="button"
