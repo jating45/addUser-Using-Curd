@@ -5,36 +5,31 @@ import { useSelector } from "react-redux";
 
 export const ShowUsers = () => {
   const color = useSelector((state) => state.color.value);
-  const usersList = useSelector((state) => state.users.value);
+  const usersList = useSelector((state) => state.users.value)?.filter(
+    (user) => user && user.id && user.firstName && user.lastName
+  );
+
   return (
-    <>
-      <div
-        className={`vh-100 d-flex align-items-center justify-content-center bg-${color}`}
-      >
-        <div className="card position-absolute w-50">
-          <div className="card-header">
-            <Navbar />
-          </div>
-          <div className="card-body">
-            <ul className="list-group list-group-flush">
-              {usersList.length === 0 ? (
-                <h1>NO USER EXISTs</h1>
-              ) : (
-                usersList.map((user) => (
-                  <NewUser
-                    key={user.id}
-                    id={user.id}
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                  />
-                ))
-              )}
-            </ul>
-          </div>
-          <ChangeFooter />
+    <div className={`vh-100 d-flex align-items-center justify-content-center bg-${color}`}>
+      <div className="card position-absolute w-50">
+        <div className="card-header">
+          <Navbar />
         </div>
+        <div className="card-body">
+          <ul className="list-group list-group-flush">
+            {usersList.length === 0 ? (
+              <h1>No Users Exist</h1>
+            ) : (
+              usersList.map((user) => (
+                <NewUser key={user.id} id={user.id} firstName={user.firstName} lastName={user.lastName} />
+              ))
+            )}
+          </ul>
+        </div>
+        <ChangeFooter />
       </div>
-    </>
+    </div>
   );
 };
+
 export default ShowUsers;
