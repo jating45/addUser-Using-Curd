@@ -5,47 +5,42 @@ import { Navbar } from "./Navbar";
 import { useSelector, useDispatch } from "react-redux";
 
 export const AddUser = () => {
-  const color = useSelector((state) => state?.color?.value || "primary");
+  const color = useSelector((state) => state.color.value);
   const dispatcher = useDispatch();
-  const usersList = useSelector((state) => state?.users?.value || []);
+  const usersList = useSelector((state) => state.users.value);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const alertRef = useRef();
 
-  let newUser = function () {
-    if (!firstName?.trim() || !lastName?.trim()) {
-      if (alertRef.current) {
-        alertRef.current.hidden = false;
-        alertRef.current.textContent = "📢 Please fill the two inputs!";
-        alertRef.current.classList.add("alert-danger");
-        setTimeout(() => {
-          if (alertRef.current) alertRef.current.hidden = true;
-        }, 2000);
-      }
-      return;
-    }
-
-    let user = {
-      id: usersList.length ? usersList[usersList.length - 1]?.id + 1 : 1,
-      firstName: firstName,
-      lastName: lastName,
-    };
-    dispatcher(addUsers(user));
-
-    if (alertRef.current) {
-      alertRef.current.classList.remove("alert-danger");
+  const user = () => {
+    if (firstName === "" || lastName === "") {
       alertRef.current.hidden = false;
-      alertRef.current.textContent = "🎉 User added Successfully!";
-      alertRef.current.classList.add("alert-success");
+      alertRef.current.textContent = "📢 Please fill the two inputs!";
+      alertRef.current.classList.add("alert-danger");
       setTimeout(() => {
-        if (alertRef.current) alertRef.current.hidden = true;
+        alertRef.current.hidden = true;
       }, 2000);
+      return;
+    } else {
+      let newUser = {
+        id: usersList.length !== 0 ? usersList[usersList.length - 1].id + 1 : 1,
+        firstName: firstName,
+        lastName: lastName,
+      };
+      dispatcher(addUsers(newUser));
+      
+    
+      alertRef.current.classList.remove("alert-danger");
+
+      
+      alertRef.current.hidden = false;
+      alertRef.current.textContent = "🎉 User added successfully!";
+      alertRef.current.classList.add("alert-success");
+   
+      setFirstName("");
+      setLastName("");
     }
-
-    setFirstName("");
-    setLastName("");
   };
-
   return (
     <>
       <div
@@ -58,7 +53,7 @@ export const AddUser = () => {
           <div className="card-body">
             <div className="d-block">
               <div className="Items">
-                <h1>Enter user </h1>
+                <h1>Enter user_s infos</h1>
                 <div ref={alertRef} className="alert" hidden></div>
                 <div className="mb-3 mt-3">
                   <input
@@ -68,7 +63,7 @@ export const AddUser = () => {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     onBlur={(e) => {
-                      if (!e.target.value.trim()) {
+                      if (e.target.value === "") {
                         e.target.classList.add("border-danger");
                       } else {
                         e.target.classList.remove("border-danger");
@@ -85,7 +80,7 @@ export const AddUser = () => {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     onBlur={(e) => {
-                      if (!e.target.value.trim()) {
+                      if (e.target.value === "") {
                         e.target.classList.add("border-danger");
                       } else {
                         e.target.classList.remove("border-danger");
@@ -98,7 +93,7 @@ export const AddUser = () => {
                   <button
                     type="button"
                     className={`btn w-100 btn-sm btn-${color}`}
-                    onClick={newUser}
+                    onClick={user}
                   >
                     Add user
                   </button>
